@@ -1,9 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-  swcMinify: true,
-};
+  // experimental: {
+  //   appDir: true,
+  // },
+}
 
-module.exports = nextConfig;
+module.exports = nextConfig
