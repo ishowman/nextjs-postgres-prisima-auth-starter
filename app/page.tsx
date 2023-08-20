@@ -1,7 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
+import { trpc } from "../utils/trpc";
 
-export default function Home() {
+export default async function Home() {
+  const response = await trpc.hello.query({ text: "world" });
+  console.log(`response`, response);
   return (
     <div className="flex h-screen bg-black">
       <div className="w-screen h-screen flex flex-col justify-center items-center">
@@ -14,7 +17,8 @@ export default function Home() {
         />
         <div className="text-center max-w-screen-sm mb-10">
           <h1 className="text-stone-200 font-bold text-2xl">
-            Next.js Prisma PostgreSQL Auth Starter
+            {/* Next.js Prisma PostgreSQL Auth Starter */}
+            {response.greeting}
           </h1>
           <p className="text-stone-400 mt-5">
             This is a{" "}
