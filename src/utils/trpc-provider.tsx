@@ -7,6 +7,20 @@ import superjson from "superjson";
 import { trpc } from "./trpc";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
+function getBaseUrl() {
+  if (typeof window !== 'undefined')
+    // browser should use relative path
+    return '';
+  if (process.env.VERCEL_URL)
+    // reference for vercel.com
+    return `https://${process.env.VERCEL_URL}`;
+  if (process.env.RENDER_INTERNAL_HOSTNAME)
+    // reference for render.com
+    return `http://${process.env.RENDER_INTERNAL_HOSTNAME}:${process.env.PORT}`;
+  // assume localhost
+  return `http://127.0.0.1:${process.env.PORT ?? 3000}`;
+}
+
 export const TrpcProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
@@ -17,9 +31,7 @@ export const TrpcProvider: React.FC<{ children: React.ReactNode }> = ({
       })
   );
 
-  const url = process.env.NEXT_PUBLIC_VERCEL_URL
-    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-    : "http://localhost:3000/api/trpc/";
+  const url = `${getBaseUrl()}/api/trpc/`;
 
   const [trpcClient] = useState(() =>
     trpc.createClient({
